@@ -4,6 +4,7 @@ plugins {
     kotlin("plugin.spring") version "2.3.10"
     id("org.springframework.boot") version "4.0.1"
     id("io.spring.dependency-management") version "1.1.7"
+    jacoco
 }
 
 group = "at.aau.serg"
@@ -35,4 +36,19 @@ tasks.withType<Test> {
 }
 kotlin {
     jvmToolchain(21)
+}
+tasks.test {
+    useJUnitPlatform()
+
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+
+    dependsOn(tasks.test)
+
+    reports {
+
+        html.required.set(true)
+    }
 }
